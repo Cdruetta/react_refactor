@@ -10,10 +10,11 @@ const ObjectsContainer = () => {
         power: ""
     });
 
-    const [data, setData] = useState([]); 
+    const [data, setData] = useState([]);
     const [editingId, setEditingId] = useState(null);
     const toast = useRef(null);
-    const API_URL = "https://crudcrud.com/api/7e1f21274de44c6f88529281f3b40112/unicorns";
+
+    const API_URL = "https://crudcrud.com/api/2e315fd4ca96402a89f5bdfc8a464ae3/unicorns";
 
     const getObjetos = async () => {
         try {
@@ -21,12 +22,24 @@ const ObjectsContainer = () => {
             const json = await response.json();
             setData(json);
         } catch (e) {
-            toast.current?.show({
-                severity: "error",
-                summary: "Error al cargar",
-                detail: e.message,
-                life: 3000,
-            });
+            console.error("Fallo al cargar desde la API, usando localStorage:", e.message);
+            const localData = localStorage.getItem("unicorns");
+            if (localData) {
+                setData(JSON.parse(localData));
+                toast.current?.show({
+                    severity: "warn",
+                    summary: "Datos locales",
+                    detail: "Se cargaron datos desde localStorage",
+                    life: 3000,
+                });
+            } else {
+                toast.current?.show({
+                    severity: "error",
+                    summary: "Error al cargar",
+                    detail: e.message,
+                    life: 3000,
+                });
+            }
         }
     };
 
@@ -42,13 +55,21 @@ const ObjectsContainer = () => {
             if (response.ok) {
                 const saved = await response.json();
                 setData((prev) => [...prev, saved]);
-                toast.current?.show({ severity: "success", summary: "Creado", detail: "Objeto guardado exitosamente" });
+                toast.current?.show({
+                    severity: "success",
+                    summary: "Creado",
+                    detail: "Objeto guardado exitosamente"
+                });
                 setFormData({ name: "", color: "", age: "", power: "" });
             } else {
                 throw new Error("Error al guardar");
             }
         } catch (err) {
-            toast.current?.show({ severity: "error", summary: "Error", detail: err.message });
+            toast.current?.show({
+                severity: "error",
+                summary: "Error",
+                detail: err.message
+            });
         }
     };
 
@@ -64,7 +85,11 @@ const ObjectsContainer = () => {
             });
 
             if (response.ok) {
-                toast.current?.show({ severity: "success", summary: "Actualizado", detail: "El objeto fue actualizado" });
+                toast.current?.show({
+                    severity: "success",
+                    summary: "Actualizado",
+                    detail: "El objeto fue actualizado"
+                });
                 setEditingId(null);
                 await getObjetos();
                 setFormData({ name: "", color: "", age: "", power: "" });
@@ -72,24 +97,36 @@ const ObjectsContainer = () => {
                 throw new Error("Error al actualizar");
             }
         } catch (err) {
-            toast.current?.show({ severity: "error", summary: "Error", detail: err.message });
+            toast.current?.show({
+                severity: "error",
+                summary: "Error",
+                detail: err.message
+            });
         }
     };
 
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
-                method: "DELETE",
+                method: "DELETE"
             });
 
             if (response.ok) {
-                toast.current?.show({ severity: "success", summary: "Eliminado", detail: `Objeto eliminado` });
+                toast.current?.show({
+                    severity: "success",
+                    summary: "Eliminado",
+                    detail: `Objeto eliminado`
+                });
                 await getObjetos();
             } else {
                 throw new Error("Error al eliminar");
             }
         } catch (err) {
-            toast.current?.show({ severity: "error", summary: "Error al eliminar", detail: err.message });
+            toast.current?.show({
+                severity: "error",
+                summary: "Error al eliminar",
+                detail: err.message
+            });
         }
     };
 
@@ -103,6 +140,12 @@ const ObjectsContainer = () => {
         setEditingId(item._id);
     };
 
+    // 🟢 Guardar automáticamente en localStorage cada vez que cambian los datos
+    useEffect(() => {
+        localStorage.setItem("unicorns", JSON.stringify(data));
+    }, [data]);
+
+    // 🟢 Cargar desde la API (o fallback localStorage)
     useEffect(() => {
         getObjetos();
     }, []);
@@ -111,13 +154,13 @@ const ObjectsContainer = () => {
         <>
             <Toast ref={toast} />
             <ObjectsView
-                unicorns={data}  
+                unicorns={data}
                 formData={formData}
                 setFormData={setFormData}
                 handleCreate={handleCreate}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
-                editingUnicorn={editingId} 
+                editingUnicorn={editingId}
                 startEdit={onEditInit}
             />
         </>

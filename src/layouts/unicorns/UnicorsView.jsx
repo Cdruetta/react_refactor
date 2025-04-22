@@ -5,7 +5,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 
 const UnicornsView = ({
   unicorns,
@@ -19,22 +19,24 @@ const UnicornsView = ({
   initialValues
 }) => {
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ 
+      ...formData, 
+      [e.target.name]: e.target.name === 'age' ? Number(e.target.value) : e.target.value 
+    });
   };
-
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(6, 'Debe tener minimo 6 caracteres')
+      .min(6, 'Debe tener mínimo 6 caracteres')
       .max(20, 'Debe tener menos de 20 caracteres')
       .required('Nombre es obligatorio'),
     age: Yup.number()
-      .required('Edad es obligatorio'),
+      .required('Edad es obligatoria'),
     color: Yup.string()
       .required('Color es obligatorio'),
     power: Yup.string()
       .required('Poder es obligatorio'),
-  })
+  });
 
   const actionBodyTemplate = (rowData) => (
     <div className="flex gap-2">
@@ -63,16 +65,14 @@ const UnicornsView = ({
 
   console.log("initialValues", initialValues);
 
-
   return (
     <div
       className="p-6"
       style={{ backgroundColor: '#121212', minHeight: '100vh', color: '#ffffff' }}
     >
-      <h2 className="text-2xl mb-8"> 🦄 Gestión de Unicornios</h2>
+      <h1 className="text-2xl mb-8"> Gestión de Unicornios</h1>
 
       {/* Formulario */}
-
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -87,7 +87,7 @@ const UnicornsView = ({
           </div>
           <div>
             <label>Edad</label>
-            <Field name='age' />
+            <Field name='age' type="number" /> {/* Especificamos el tipo como 'number' */}
             <ErrorMessage name="age" component='div' />
           </div>
           <div>
@@ -104,15 +104,15 @@ const UnicornsView = ({
         </Form>
       </Formik>
 
-       {/* Tabla */}
-       <div style={{ marginTop: '2rem' }}>
+      {/* Tabla */}
+      <div style={{ marginTop: '2rem' }}>
         <DataTable
           value={unicorns}
           tableStyle={{ minWidth: '50rem' }}
           className="p-datatable-sm"
         >
           <Column field="name" header="Nombre" style={{ color: '#fff' }}></Column>
-          <Column field="age" header="Edad"></Column>
+          <Column field="age" header="Edad" type="number"></Column> {/* Aseguramos que la edad es mostrada correctamente */}
           <Column field="color" header="Color"></Column>
           <Column field="power" header="Poder"></Column>
           <Column
