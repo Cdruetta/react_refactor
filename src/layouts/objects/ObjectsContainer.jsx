@@ -10,7 +10,7 @@ const ObjectsContainer = () => {
         power: ""
     });
 
-    const [data, setData] = useState([]); // ✅ Estado para lista de unicornios
+    const [data, setData] = useState([]); 
     const [editingId, setEditingId] = useState(null);
     const toast = useRef(null);
     const API_URL = "https://crudcrud.com/api/7e1f21274de44c6f88529281f3b40112/unicorns";
@@ -111,13 +111,13 @@ const ObjectsContainer = () => {
         <>
             <Toast ref={toast} />
             <ObjectsView
-                unicorns={data} // ✅ Lista de unicornios
+                unicorns={data}  
                 formData={formData}
                 setFormData={setFormData}
                 handleCreate={handleCreate}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
-                editingUnicorn={editingId} // ✅ Indicador de edición
+                editingUnicorn={editingId} 
                 startEdit={onEditInit}
             />
         </>

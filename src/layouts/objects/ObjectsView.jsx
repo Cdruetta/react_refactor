@@ -4,7 +4,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import { motion } from 'framer-motion';
 
 const API_URL = 'https://crudcrud.com/api/884d7e5200f94d2ea1c4688026a1b8d0/unicorns';
@@ -84,21 +84,17 @@ const ObjectsContainer = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       className="p-4 w-11 md:w-8 lg:w-6 mx-auto"
-      style={{ backgroundColor: '#121212', color: '#fff', minHeight: '100vh' }}
     >
-      <h2 className="text-2xl mb-8 text-center">🦄 Gestión de Unicornios</h2>
+      <h2 className="text-2xl mb-8 text-center">Gestión de Unicornios</h2>
 
       {/* Formulario */}
       <div
-        className="p-fluid grid gap-3 mb-4"
+        className="p-fluid grid gap-3 mb-4 surface-card p-4 border-round-lg shadow-2"
         style={{
-          backgroundColor: '#1e1e1e',
-          padding: '2rem',
-          borderRadius: '12px',
-          maxWidth: '700px',
-          marginBottom: '3rem',
-          margin: '0 auto',
+          maxWidth: '700px', 
+          margin: '0 auto' 
         }}
+        
       >
         <div className="field col-12 md:col-6">
           <label htmlFor="name">Nombre</label>

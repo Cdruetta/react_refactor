@@ -1,6 +1,6 @@
 import React from "react";
 import ObjectsContainer from "./layouts/objects/ObjectsContainer";
-import { Uniprovider } from "./context/UnicornContext";  // Asegúrate que esta ruta sea correcta
+import { Uniprovider } from "./context/UnicornContext"; 
 
 const App = () => {
   return (
