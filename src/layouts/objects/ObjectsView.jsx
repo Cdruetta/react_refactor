@@ -4,11 +4,12 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 import { motion } from 'framer-motion';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import './Objects.css';
 
-const API_URL = 'https://crudcrud.com/api/2e315fd4ca96402a89f5bdfc8a464ae3/unicorns';
+const API_URL = 'https://crudcrud.com/api/c347e73b032e444588115902d3267072/unicorns';
 
 const ObjectsContainer = () => {
   const [formData, setFormData] = useState({
@@ -28,23 +29,12 @@ const ObjectsContainer = () => {
       setUnicorns(data);
     } catch (err) {
       console.error('Error al obtener unicornios:', err);
-      const localData = localStorage.getItem('unicorns');
-      if (localData) {
-        setUnicorns(JSON.parse(localData));
-        toast.current?.show({
-          severity: 'warn',
-          summary: 'Conexión fallida',
-          detail: 'Se cargaron datos desde localStorage',
-        });
-      } else {
-        toast.current?.show({
-          severity: 'error',
-          summary: 'Error de conexión',
-          detail: err.message,
-        });
-      }
     }
   };
+
+  useEffect(() => {
+    getUnicorns();
+  }, []);
 
   const handleCreate = async () => {
     try {
@@ -64,33 +54,6 @@ const ObjectsContainer = () => {
     }
   };
 
-  const handleUpdate = async () => {
-    if (!editingUnicorn) return;
-    try {
-      await fetch(`${API_URL}/${editingUnicorn._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      setEditingUnicorn(null);
-      setFormData({ name: '', age: '', colour: '', power: '' });
-      await getUnicorns();
-      toast.current?.show({ severity: 'success', summary: 'Actualizado', detail: 'Unicornio editado' });
-    } catch (err) {
-      console.error('Error al actualizar unicornio:', err);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-      await getUnicorns();
-      toast.current?.show({ severity: 'info', summary: 'Eliminado', detail: 'Unicornio eliminado' });
-    } catch (err) {
-      console.error('Error al eliminar unicornio:', err);
-    }
-  };
-
   const startEdit = (unicorn) => {
     setEditingUnicorn(unicorn);
     setFormData({
@@ -101,16 +64,6 @@ const ObjectsContainer = () => {
     });
   };
 
-  const isFormValid = formData.name && formData.colour && formData.age !== '' && formData.power;
-
-  useEffect(() => {
-    getUnicorns();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('unicorns', JSON.stringify(unicorns));
-  }, [unicorns]);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -119,59 +72,59 @@ const ObjectsContainer = () => {
       className="p-4 w-11 md:w-8 lg:w-6 mx-auto"
     >
       <Toast ref={toast} />
-
-      <h2 className="text-2xl mb-8 text-center">Gestión de Unicornios</h2>
-
+      <h1 className="text-2xl mb-8 text-center" style={{ color: '#333' }}>Gestión de Unicornios</h1>
       {/* Formulario */}
       <div
         className="p-fluid grid gap-3 mb-4 surface-card p-4 border-round-lg shadow-2"
-        style={{ maxWidth: '700px', margin: '0 auto' }}
+        style={{ maxWidth: '700px', margin: '0 auto', backgroundColor: '#fafafa' }}
       >
         <div className="field col-12 md:col-6">
-          <label htmlFor="name">Nombre</label>
+          <label htmlFor="name" className="font-medium" style={{ color: '#333' }}>Nombre</label>
           <InputText
             id="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
             className={!formData.name ? 'p-invalid' : ''}
+            placeholder="Nombre "
           />
           {!formData.name && <small className="p-error">El nombre es requerido.</small>}
         </div>
 
         <div className="field col-12 md:col-6">
-          <label htmlFor="colour">Color</label>
+          <label htmlFor="colour" className="font-medium" style={{ color: '#333' }}>Color</label>
           <InputText
             id="colour"
             value={formData.colour}
             onChange={(e) => setFormData({ ...formData, colour: e.target.value })}
             required
             className={!formData.colour ? 'p-invalid' : ''}
+            placeholder=" "
           />
           {!formData.colour && <small className="p-error">El color es requerido.</small>}
         </div>
 
         <div className="field col-12 md:col-6">
-          <label htmlFor="age">Edad</label>
+          <label htmlFor="age" className="font-medium" style={{ color: '#333' }}>Edad</label>
           <InputNumber
-            id="age"
             value={formData.age ? parseInt(formData.age) : null}
             onValueChange={(e) => setFormData({ ...formData, age: e.value })}
             required
             className={formData.age === '' ? 'p-invalid' : ''}
             useGrouping={false}
+            placeholder=" "
           />
           {formData.age === '' && <small className="p-error">La edad es requerida.</small>}
         </div>
 
         <div className="field col-12 md:col-6">
-          <label htmlFor="power">Poder</label>
+          <label htmlFor="power" className="font-medium" style={{ color: '#333' }}>Poder</label>
           <InputText
-            id="power"
             value={formData.power}
             onChange={(e) => setFormData({ ...formData, power: e.target.value })}
             required
             className={!formData.power ? 'p-invalid' : ''}
+            placeholder=""
           />
           {!formData.power && <small className="p-error">El poder es requerido.</small>}
         </div>
@@ -181,12 +134,12 @@ const ObjectsContainer = () => {
             type="button"
             label={editingUnicorn ? 'Actualizar Unicornio' : 'Crear Unicornio'}
             icon={editingUnicorn ? 'pi pi-save' : 'pi pi-plus'}
-            onClick={editingUnicorn ? handleUpdate : handleCreate}
-            disabled={!isFormValid}
+            onClick={editingUnicorn ? handleCreate : handleCreate}
+            disabled={!formData.name || !formData.colour || !formData.age || !formData.power}
             style={{
-              backgroundColor: '#00bcd4',
+              backgroundColor: '#333333',
               border: 'none',
-              color: '#000',
+              color: '#fff',
               fontWeight: 'bold',
               width: '100%',
               padding: '0.75rem',
@@ -196,42 +149,48 @@ const ObjectsContainer = () => {
         </div>
       </div>
 
-      {/* Tabla */}
-      <h3 className="text-center mb-3">Lista de Unicornios</h3>
-      <DataTable
-        value={unicorns}
-        stripedRows
-        responsiveLayout="scroll"
-        loading={false}
-      >
-        <Column field="name" header="Nombre" />
-        <Column field="colour" header="Color" />
-        <Column field="age" header="Edad" />
-        <Column field="power" header="Poder" />
-        <Column
-          header="Acciones"
-          body={(rowData) => (
-            <div className="flex gap-2">
-              <Button
-                label="Editar"
-                icon="pi pi-pencil"
-                onClick={() => startEdit(rowData)}
-                style={{ backgroundColor: '#f0ad4e', border: 'none', color: '#000' }}
-              />
-              <Button
-                label="Eliminar"
-                icon="pi pi-trash"
-                onClick={() => handleDelete(rowData._id)}
-                style={{ backgroundColor: '#d9534f', border: 'none', color: '#fff' }}
-              />
-            </div>
-          )}
-        />
-      </DataTable>
-
-      <ConfirmDialog />
+      {/* Navegación */}
+      <div className="text-center">
+        <Link to="/unicorns">
+          <Button label="Ver Lista de Unicornios" icon="pi pi-list" />
+        </Link>
+      </div>
     </motion.div>
   );
 };
 
-export default ObjectsContainer;
+const UnicornList = () => {
+  const [unicorns, setUnicorns] = useState([]);
+
+  useEffect(() => {
+    const fetchUnicorns = async () => {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      setUnicorns(data);
+    };
+    fetchUnicorns();
+  }, []);
+
+  return (
+    <div className="p-4">
+      <h1 className="text-center">Lista de Unicornios</h1>
+      <DataTable value={unicorns} stripedRows responsiveLayout="scroll">
+        <Column field="name" header="Nombre" />
+        <Column field="colour" header="Color" />
+        <Column field="age" header="Edad" />
+        <Column field="power" header="Poder" />
+      </DataTable>
+    </div>
+  );
+};
+
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<ObjectsContainer />} />
+      <Route path="/unicorns" element={<UnicornList />} />
+    </Routes>
+  </Router>
+);
+
+export default App;

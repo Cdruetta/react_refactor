@@ -1,12 +1,12 @@
 import React from "react";
 import ObjectsContainer from "./layouts/objects/ObjectsContainer";
-import { Uniprovider } from "./context/UnicornContext"; 
+import { UnicornProvider } from "./context/UnicornProvider"; // Importar desde UnicornProvider
 
 const App = () => {
   return (
-    <Uniprovider>
+    <UnicornProvider>
       <ObjectsContainer />
-    </Uniprovider>
+    </UnicornProvider>
   );
 };
 

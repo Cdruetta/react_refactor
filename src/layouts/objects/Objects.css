@@ -1,0 +1,87 @@
+/* styles.css */
+.p-input-rounded {
+    border-radius: 50px !important;
+  }
+  
+  .p-button-rounded {
+    border-radius: 50px !important;
+  }
+
+  .card-container {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilos generales para el contenedor de los objetos */
+.p-4 {
+  padding: 2rem;
+  background-color: #f4f7fa; /* Fondo más claro */
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado */
+h2.text-2xl {
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Estilos del formulario */
+.p-fluid .field {
+  margin-bottom: 1rem;
+}
+
+.p-fluid .field label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Estilos de los botones */
+.p-button {
+  font-weight: 600;
+  border-radius: 6px;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+}
+
+.p-button-primary {
+  background-color: #00bcd4;
+  border-color: #00bcd4;
+}
+
+.p-button-warning {
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.p-button-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+
+/* Estilos para la tabla */
+.p-datatable {
+  margin-top: 2rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Estilos de las celdas de la tabla */
+.p-datatable th, .p-datatable td {
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Animación del div contenedor */
+.motion-div {
+  transition: all 0.4s ease-in-out;
+  transform: translateY(20px);
+}
+.motion-div.appear {
+  opacity: 1;
+  transform: translateY(0);
+}

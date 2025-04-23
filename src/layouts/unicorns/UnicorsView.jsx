@@ -1,5 +1,4 @@
-import React from 'react';
-import { InputText } from 'primereact/inputtext';
+import React from 'react'
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -80,28 +79,32 @@ const UnicornsView = ({
         enableReinitialize
       >
         <Form>
-          <div>
-            <label>Nombre</label>
-            <Field name='name' />
-            <ErrorMessage name="name" component='div' />
-          </div>
-          <div>
-            <label>Edad</label>
-            <Field name='age' type="number" /> {/* Especificamos el tipo como 'number' */}
-            <ErrorMessage name="age" component='div' />
-          </div>
-          <div>
-            <label>Color</label>
-            <Field name='color' />
-            <ErrorMessage name="color" component='div' />
-          </div>
-          <div>
-            <label>Poder</label>
-            <Field name='power' />
-            <ErrorMessage name="power" component='div' />
-          </div>
-          <Button style={{ color: 'white' }} label={editingUnicorn ? 'Editar unicornio' : 'Crear unicornio'} type='submit'></Button>
-        </Form>
+            <div>
+              <label htmlFor="name">Nombre</label>
+              <Field id="name" name='name' />
+              <ErrorMessage name="name" component='div' />
+            </div>
+            <div>
+              <label htmlFor="age">Edad</label>
+              <Field id="age" name='age' type="number" />
+              <ErrorMessage name="age" component='div' />
+            </div>
+            <div>
+              <label htmlFor="color">Color</label>
+              <Field id="color" name='color' />
+              <ErrorMessage name="color" component='div' />
+            </div>
+            <div>
+              <label htmlFor="power">Poder</label>
+              <Field id="power" name='power' />
+              <ErrorMessage name="power" component='div' />
+            </div>
+            <Button
+              style={{ color: 'white' }}
+              label={editingUnicorn ? 'Editar unicornio' : 'Crear unicornio'}
+              type='submit'
+            />
+          </Form>
       </Formik>
 
       {/* Tabla */}
